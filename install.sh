@@ -4,7 +4,8 @@
 # Author(s): Jonathan Paulick
 #
 ################################################################################
-sudocheck() {
+### FUNCTIONS START ############################################################
+sudoCheck() {
   if [[ $EUID -ne 0 ]]; then
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -201,7 +202,9 @@ doneOkay() {
 }
 
 #############################
-
+### INSTALLER FUNCTIONS END #####################################################
+#### function layout for order one by one
+sudoCheck
 ubuntuVersionCheck
 sudo apt-get update
 sudo apt-get upgrade

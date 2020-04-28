@@ -142,7 +142,7 @@ done_okay() {
 #############################
 sudo_check
 ubuntu_version_check
-sudo apt-get update -y
-sudo apt-get upgrade -y
+sudo apt-get update -yqq
+sudo apt-get upgrade -yqq
 dependencies_install
 done_okay

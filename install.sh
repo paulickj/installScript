@@ -90,8 +90,8 @@ install_extras() {
 install_rvm() {
     echo -e "${c}Installing RVM"; $r
     sudo apt-add-repository -y ppa:rael-gc/rvm
-    sudo apt-get update
-    sudo apt-get install rvm
+    sudo apt-get update -yqq
+    sudo apt-get install -y rvm
     done_okay
 }
 
@@ -99,7 +99,7 @@ install_ruby() {
     echo -e "${c}Installing Ruby"; $r
     echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
     source /etc/profile.d/rvm.sh
-    rvm install ruby
+    rvm install ruby 
     done_okay
 }
 
@@ -116,7 +116,8 @@ install_yarn() {
     echo -e "${c}Installing Yarn"; $r
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt-get update && sudo apt-get install yarn
+    sudo apt-get update -yqq
+    sudo apt-get install yarn 
     done_okay
 }
 
@@ -140,6 +141,8 @@ done_okay() {
 }
 
 #############################
+agree_base
+main_start
 sudo_check
 ubuntu_version_check
 sudo apt-get update -yqq

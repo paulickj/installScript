@@ -92,7 +92,7 @@ install_rvm() {
     sudo apt-add-repository -y ppa:rael-gc/rvm
     sudo apt-get update
     sudo apt-get install rvm
-    doneOkay
+    done_okay
 }
 
 install_ruby() {
@@ -100,7 +100,7 @@ install_ruby() {
     echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
     source /etc/profile.d/rvm.sh
     rvm install ruby
-    doneOkay
+    done_okay
 }
 
 install_nodejs() {
@@ -109,7 +109,7 @@ install_nodejs() {
     curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - #Submit the version according to your need.
     sudo apt install -y nodejs
     ( set -x; nodejs -v )
-    doneOkay
+    done_okay
 }
 
 install_yarn() {
@@ -117,7 +117,7 @@ install_yarn() {
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     sudo apt-get update && sudo apt-get install yarn
-    doneOkay
+    done_okay
 }
 
 
@@ -126,7 +126,7 @@ install_yarn() {
 bad_input() {
   echo
   read -p '⛔️ ERROR - Bad Input! | Press [ENTER] ' typed </dev/tty
-  agreeBase
+  agree_base
 }
 
 nope() {

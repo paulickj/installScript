@@ -4,8 +4,7 @@
 # Author(s): Jonathan Paulick
 #
 ################################################################################
-### FUNCTIONS START ############################################################
-sudoCheck() {
+sudo_check() {
   if [[ $EUID -ne 0 ]]; then
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -16,9 +15,9 @@ EOF
   fi
 }
 
-ubuntuVersionCheck() {
+ubuntu_version_check() {
 	versioncheck=$(cat /etc/*-release | grep "Ubuntu" | grep -E '19')
-  if [[ "$versioncheck" >= "19" ]]; then
+  if [[ "$versioncheck" == "19" ]]; then
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔ WOAH! ......  System OS Warning!
@@ -32,7 +31,7 @@ EOF
 }
 
 
-agreeBase() {
+agree_base() {
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔️ READ THIS NOTE 
@@ -47,17 +46,17 @@ EOF
   read -p '↘️  Type Y | N or Z | Press [ENTER]: ' typed </dev/tty
 
   case $typed in
-    Y) dependenciesInstall ;;
-    y) dependenciesInstall ;;
+    Y) dependencies_install ;;
+    y) dependencies_install ;;
     N) nope ;;
     n) nope ;;
     z) exit 0 ;;
     Z) exit 0 ;;
-    *) badInput ;;
+    *) bad_input ;;
   esac
 }
 
-mainStart() {
+main_start() {
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🌎  Dependencies to install: 
@@ -74,82 +73,21 @@ EOF
 sleep 0.5
 }
 
-dependenciesInstall() {
-	sudo apt-get install software-properties-common
-	installRVM
-	installRuby
-	installYarn
-	installNodeJS
+dependencies_install() {
+    sudo apt-get install software-properties-common
+    install_rvm
+    install_ruby
+    install_yarn
+    install_nodejs
 }
 
-installExtras() {
-	echo "not done yet"
+install_extras() {
+    echo "not done yet"
 }
-
-askGit() {
-	agreeBase() {
-tee <<-EOF
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🌎  Install Git?: 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[ Y ] Yes, I want to install git on this machine
-[ N ] No, I already have git installed or I don't want it
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EOF
-  read -p '↘️  Type Y | N or Z | Press [ENTER]: ' typed </dev/tty
-
-  case $typed in
-    Y) installGit ;;
-    y) installGit ;;
-    N) nope ;;
-    n) nope ;;
-    *) badInput ;;
-  esac
-}
-
-installGit() {
-	sudo apt install git
-	git config --global user.name "Your Name"
-	git config --global user.email "youremail@yourdomain.com"
-
-	git config --list
-}
-
-setupSSHKeys() {
-	ssh-keygen -t rsa -b 4096 -C 
-
-	eval "$(ssh-agent -s)"
-	ssh-add ~/.ssh/id_rsa
-
-
-	cat /home/users/.ssh/id_rsa.pub
-
-	tee <<-EOF
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	🌎  INSTALLING: Git Notice
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	Go to https://github.com/settings/ssh/new and your ssh key
-	If you need help refer to 
-	https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
-	━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-	EOF
-
-	ssh -T git@github.com
-}
-
-installSublimeText3() {
-	echo -e "${c}Installing Sublime Text 3"; $r
-	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-	sudo apt update -y
-	sudo apt install -y sublime-text
-	;;
-}
-
 
 #############################
 
-installRVM() {
+install_rvm() {
 	echo -e "${c}Installing RVM"; $r
 	sudo apt-add-repository -y ppa:rael-gc/rvm
 	sudo apt-get update
@@ -157,7 +95,7 @@ installRVM() {
 	doneOkay
 }
 
-installRuby() {
+install_ruby() {
 	echo -e "${c}Installing Ruby"; $r
 	echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
 	source /etc/profile.d/rvm.sh
@@ -165,7 +103,7 @@ installRuby() {
 	doneOkay
 }
 
-installNodeJS() {
+install_nodejs() {
 	echo -e "${c}Installing NodeJS"; $r
 	cd
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - #Submit the version according to your need.
@@ -174,7 +112,7 @@ installNodeJS() {
 	doneOkay
 }
 
-installYarn() {
+install_yarn() {
 	echo -e "${c}Installing Yarn"; $r
 	curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -185,7 +123,7 @@ installYarn() {
 
 ##############################
 
-badInput() {
+bad_input() {
   echo
   read -p '⛔️ ERROR - Bad Input! | Press [ENTER] ' typed </dev/tty
   agreeBase
@@ -196,17 +134,15 @@ nope() {
   exit 0
 }
 
-doneOkay() {
+done_okay() {
  echo
   read -p 'Install Success | PRESS [ENTER] ' typed </dev/tty
 }
 
 #############################
-### INSTALLER FUNCTIONS END #####################################################
-#### function layout for order one by one
-sudoCheck
-ubuntuVersionCheck
+sudo_check
+ubuntu_version_check
 sudo apt-get update
 sudo apt-get upgrade
-dependenciesInstall
-doneOkay
+dependencies_install
+done_okay

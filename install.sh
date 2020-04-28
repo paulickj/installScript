@@ -74,7 +74,7 @@ sleep 0.5
 }
 
 dependencies_install() {
-    sudo apt-get install software-properties-common
+    sudo apt-get install -yqq software-properties-common
     install_rvm
     install_ruby
     install_yarn
@@ -89,7 +89,7 @@ install_extras() {
 
 install_rvm() {
     echo -e "${c}Installing RVM"; $r
-    sudo apt-add-repository -yqq ppa:rael-gc/rvm
+    sudo apt-add-repository ppa:rael-gc/rvm
     sudo apt-get update -yqq
     sudo apt-get install -yqq rvm
     done_okay

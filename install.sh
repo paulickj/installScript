@@ -46,8 +46,8 @@ EOF
   read -p '↘️  Type Y | N or Z | Press [ENTER]: ' typed </dev/tty
 
   case $typed in
-    Y) dependencies_install ;;
-    y) dependencies_install ;;
+    Y) main_start ;;
+    y) main_start ;;
     N) nope ;;
     n) nope ;;
     z) exit 0 ;;
@@ -89,9 +89,9 @@ install_extras() {
 
 install_rvm() {
     echo -e "${c}Installing RVM"; $r
-    sudo apt-add-repository -y ppa:rael-gc/rvm
+    sudo apt-add-repository -yqq ppa:rael-gc/rvm
     sudo apt-get update -yqq
-    sudo apt-get install -y rvm
+    sudo apt-get install -yqq rvm
     done_okay
 }
 
@@ -107,7 +107,7 @@ install_nodejs() {
     echo -e "${c}Installing NodeJS"; $r
     cd
     curl -sL https://deb.nodesource.com/setup_12.x | sudo bash - #Submit the version according to your need.
-    sudo apt install -y nodejs
+    sudo apt install -yqq nodejs
     ( set -x; nodejs -v )
     done_okay
 }
@@ -117,7 +117,7 @@ install_yarn() {
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     sudo apt-get update -yqq
-    sudo apt-get install yarn 
+    sudo apt-get -yqq install yarn 
     done_okay
 }
 
@@ -141,11 +141,10 @@ done_okay() {
 }
 
 #############################
-agree_base
-main_start
-sudo_check
-ubuntu_version_check
 sudo apt-get update -yqq
 sudo apt-get upgrade -yqq
+agree_base
+sudo_check
+ubuntu_version_check
 dependencies_install
 done_okay

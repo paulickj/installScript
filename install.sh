@@ -121,7 +121,7 @@ done_okay() {
 }
 
 final() {
-    echo "The next step is to run sudo reboot"
+    echo "The next step is to reboot this computer/vm"
     done_okay
 }
 

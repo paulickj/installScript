@@ -15,22 +15,6 @@ EOF
   fi
 }
 
-ubuntu_version_check() {
-    versioncheck=$(cat /etc/*-release | grep "Ubuntu" | grep -E '19')
-  if [[ "$versioncheck" == "19" ]]; then
-tee <<-EOF
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⛔ WOAH! ......  System OS Warning!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Supported: UBUNTU 16.xx - 18.10 ~ LTS/SERVER
-This server may not be supported due to having the incorrect OS detected!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EOF
-  exit 0
-  else echo ""; fi
-}
-
-
 agree_base() {
 tee <<-EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -79,10 +63,6 @@ dependencies_install() {
     install_ruby
     install_yarn
     install_nodejs
-}
-
-install_extras() {
-    echo "not done yet"
 }
 
 #############################
@@ -140,11 +120,15 @@ done_okay() {
   read -p 'Install Success | PRESS [ENTER] ' typed </dev/tty
 }
 
+final() {
+    echo "The next step is to run sudo reboot"
+    done_okay
+}
+
 #############################
-sudo apt-get update -yqq
-sudo apt-get upgrade -yqq
 agree_base
 sudo_check
-ubuntu_version_check
+sudo apt-get update -yqq
+sudo apt-get upgrade -yqq
 dependencies_install
-done_okay
+final

@@ -69,9 +69,12 @@ dependencies_install() {
 
 install_rvm() {
     echo -e "${c}Installing RVM"; $r
-    sudo apt-add-repository ppa:rael-gc/rvm
     sudo apt-get update -yqq
     sudo apt-get install -yqq rvm
+    command curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -
+    command curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -
+    \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable
+    source ~/.rvm/scripts/rvm
     done_okay
 }
 
@@ -79,7 +82,7 @@ install_ruby() {
     echo -e "${c}Installing Ruby"; $r
     echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
     source /etc/profile.d/rvm.sh
-    rvm install ruby 
+    rvm install ruby 2.7.4 
     done_okay
 }
 

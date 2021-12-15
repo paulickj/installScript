@@ -59,30 +59,19 @@ sleep 2.5
 
 dependencies_install() {
     sudo apt-get install -yqq software-properties-common
-    install_rvm
-    install_ruby
+    install_rbenv
     install_yarn
     install_nodejs
 }
 
 #############################
 
-install_rvm() {
-    echo -e "${c}Installing RVM"; $r
-    sudo apt-get update -yqq
-    sudo apt-get install -yqq rvm
-    command curl -sSL https://rvm.io/mpapis.asc | sudo gpg --import -
-    command curl -sSL https://rvm.io/pkuczynski.asc | sudo gpg --import -
-    \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable
-    source ~/.rvm/scripts/rvm
-    done_okay
-}
-
-install_ruby() {
-    echo -e "${c}Installing Ruby"; $r
-    echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
-    source /etc/profile.d/rvm.sh
-    rvm install ruby 2.7.4 
+install_rbenv() {
+    echo -e "${c}Installing Rbenv"; $r
+    sudo apt install git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev -yqq
+    curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(rbenv init -)"' >> ~/.bashrc
     done_okay
 }
 
